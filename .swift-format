@@ -1,0 +1,11 @@
+{
+    "lineLength": 200,
+    "indentation": {
+        "spaces": 2
+    },
+    "indentConditionalCompilationBlocks": false,
+    "rules": {
+        "GroupNumericLiterals": false,
+        "OrderedImports": false
+    }
+}

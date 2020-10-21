@@ -17,34 +17,34 @@ public struct NetworkInterface {
   public let address: SocketAddress
   public let netmask: SocketAddress?
 
-  internal init?(_ ifaddr: ifaddrs) {
-    guard let address = SocketAddress(ifaddr.ifa_addr.convert(to: sockaddr_storage.self)) else {
+  internal init?(_ ifaddrs: ifaddrs) {
+    guard let ifa_addr = ifaddrs.ifa_addr, let address = SocketAddress(ifa_addr.convert(to: sockaddr_storage.self)) else {
       return nil
     }
 
-    self.name = String(cString: ifaddr.ifa_name)
+    self.name = String(cString: ifaddrs.ifa_name)
     self.address = address
-    self.netmask = SocketAddress(ifaddr.ifa_netmask.convert(to: sockaddr_storage.self))
+    self.netmask = SocketAddress(ifaddrs.ifa_netmask.convert(to: sockaddr_storage.self))
   }
 }
 
 extension NetworkInterface {
 
   public static var all: [NetworkInterface] {
-    var ifaddr: UnsafeMutablePointer<ifaddrs>?
-    guard getifaddrs(&ifaddr) != -1 else {
+    var ifaddrs: UnsafeMutablePointer<ifaddrs>?
+    guard getifaddrs(&ifaddrs) != -1 else {
       return []
     }
 
     var list = [NetworkInterface]()
-    var next = ifaddr
+    var next = ifaddrs
     while next != nil {
       if let ni = NetworkInterface(next!.pointee) {
         list.append(ni)
       }
       next = next?.pointee.ifa_next
     }
-    freeifaddrs(ifaddr)
+    freeifaddrs(ifaddrs)
     return list
   }
 }

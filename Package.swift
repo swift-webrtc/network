@@ -16,6 +16,10 @@ let package = Package(
       name: "Network",
       dependencies: [.product(name: "Core", package: "webrtc-core")]
     ),
+    .target(
+      name: "NetworkExamples",
+      dependencies: ["Network"]
+    ),
     .testTarget(
       name: "NetworkTests",
       dependencies: ["Network"]

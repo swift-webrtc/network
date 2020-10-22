@@ -98,7 +98,7 @@ public enum SocketAddress: Equatable {
   }
 
   @discardableResult
-  internal func withSockAddr<R>(
+  public func withSockAddr<R>(
     _ body: (UnsafePointer<sockaddr>, socklen_t) throws -> R
   ) rethrows -> R {
     switch self {

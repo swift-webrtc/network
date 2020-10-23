@@ -65,7 +65,7 @@ public enum SocketAddress: Equatable {
     }
   }
 
-  internal init?(_ addr: sockaddr_storage) {
+  public init?(_ addr: sockaddr_storage) {
     switch addr.ss_family {
     case sa_family_t(AF_INET):
       self = .v4(.init(addr.convert()))
@@ -292,13 +292,13 @@ extension SocketAddressV6: CustomStringConvertible {
 
 extension sockaddr_storage {
 
-  internal mutating func withMutableSockAddr<R>(_ body: (UnsafeMutablePointer<sockaddr>, Int) throws -> R) rethrows -> R {
+  public mutating func withMutableSockAddr<R>(_ body: (UnsafeMutablePointer<sockaddr>, Int) throws -> R) rethrows -> R {
     try withUnsafeMutableBytes(of: &self) {
       try body($0.baseAddress!.assumingMemoryBound(to: sockaddr.self), $0.count)
     }
   }
 
-  internal func convert<T>(to type: T.Type = T.self) -> T {
+  public func convert<T>(to type: T.Type = T.self) -> T {
     withUnsafePointer(to: self) {
       $0.withMemoryRebound(to: T.self, capacity: 1, \.pointee)
     }
@@ -309,7 +309,7 @@ extension sockaddr_storage {
 
 extension UnsafeMutablePointer where Pointee == sockaddr {
 
-  internal func convert<T>(to type: T.Type = T.self) -> T {
+  public func convert<T>(to type: T.Type = T.self) -> T {
     withMemoryRebound(to: type, capacity: 1, \.pointee)
   }
 }

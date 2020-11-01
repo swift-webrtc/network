@@ -9,20 +9,13 @@ let package = Package(
     .library(name: "Network", targets: ["Network"]),
   ],
   dependencies: [
-    .package(url: "https://github.com/swift-webrtc/webrtc-core.git", .branch("master")),
+    .package(name: "webrtc-core", url: "https://github.com/swift-webrtc/core.git", .branch("master"))
   ],
   targets: [
-    .target(
-      name: "Network",
-      dependencies: [.product(name: "Core", package: "webrtc-core")]
-    ),
-    .target(
-      name: "NetworkExamples",
-      dependencies: ["Network"]
-    ),
-    .testTarget(
-      name: "NetworkTests",
-      dependencies: ["Network"]
-    ),
+    .target(name: "Network", dependencies: [
+      .product(name: "Core", package: "webrtc-core")
+    ]),
+    .target(name: "NetworkExamples", dependencies: ["Network"]),
+    .testTarget(name: "NetworkTests", dependencies: ["Network"]),
   ]
 )
